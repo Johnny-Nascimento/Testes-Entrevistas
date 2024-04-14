@@ -1,0 +1,42 @@
+﻿@model CadastroEmail
+
+<h1>Cadastrar E-mail</h1>
+
+
+<div class="row">
+
+    <div class="col-md-8 mx-auto rounded border p-3">
+
+        <h2 class="text-center mb-5">Novo Cadastro</h2>
+
+        <form method="post" enctype="multipart/form-data">
+                <div class="row mb-3">
+                    <label class="col-sm-4 col-form-label">Nome</label>
+                    <div class="col-sm-8">
+                    <input class="form-control" asp-for="EmailTexto" />
+                    </div>
+                </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var email in Model.Emails)
+                    {
+                        <tr>
+                            <td>@email.EmailCadastro</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <button class="btn btn-primary btn-sm" >Adicionar</button>
+            <a class="btn btn-outline-primary" asp-controller="Cadastros" asp-action="Cadastrar" role="button">Voltar</a>
+        </form>
+
+    </div>
+</div>

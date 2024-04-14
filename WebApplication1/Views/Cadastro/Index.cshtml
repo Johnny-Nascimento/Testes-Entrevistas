@@ -1,0 +1,45 @@
+﻿@{
+}
+
+<h2 class="text-center" mb-5>Cadastro Quali</h2>
+
+<div class="row mb-5">
+    <div class="col">
+        <a class="btn btn-primary" asp-controller="Cadastros" asp-action="Cadastrar">Novo Cadastro</a>
+    </div>
+    <div class="col">
+        
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Empresa</th>
+            <th>Email</th>
+            <th>Telefone Pessoal</th>
+            <th>Telefone Comercial</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(var cadastro in Model)
+        {
+            <tr>
+                <td>@cadastro.Nome</td>
+                <td>@cadastro.Empresa</td>
+                <td>
+                    <a class="btn btn-warning btn-sm" asp-controller="Cadastros" asp-action="Email" asp-route-id="@cadastro.Id">E-mail</a>
+                </td>
+                <td>@cadastro.TelefonePessoal</td>
+                <td>@cadastro.TelefoneComercial</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-controller="Cadastros" asp-action="Editar" asp-route-id="@cadastro.Id">Editar</a>
+                    <a class="btn btn-danger btn-sm" asp-controller="Cadastros" asp-action="Apagar" asp-route-id="@cadastro.Id" onclick="return confirm('Você tem certeza')">Apagar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
