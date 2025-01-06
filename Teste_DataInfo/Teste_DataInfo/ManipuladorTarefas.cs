@@ -1,21 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace Teste_DataInfo
+﻿namespace Teste_DataInfo
 {
     public class ManipuladorTarefas
-    {
-        public enum FiltroLeitura
-        {
-            Todos = 1,
-            Concluido = 2,
-            Pendente = 3
-        };
-
+    {        
         private List<Tarefa> Tarefas { get; set; }
         public ManipuladorTarefas()
         {
@@ -38,20 +24,11 @@ namespace Teste_DataInfo
         // Listar todas as tarefas cadastradas, mostrando título, descrição, status(pendente
         // ou concluída), e a data de criação.
         // Filtrar Tarefas: Permitir ao usuário visualizar apenas tarefas pendentes, concluídas ou todas. 
-        public string ListaTarefas(FiltroLeitura filtro = FiltroLeitura.Todos)
+        public string ListaTarefas(Tarefa.StatusTarefa statusTarefa = Tarefa.StatusTarefa.Pendente | Tarefa.StatusTarefa.Concluido)
         {
-            // Melhorar isso vvvvv
-
             List<Tarefa> listaTarefasFiltrada = new List<Tarefa>();
 
-            if (filtro.Equals(FiltroLeitura.Todos))
-                listaTarefasFiltrada = Tarefas.OrderByDescending(x => x.DataCriacao).ToList();
-            else if (filtro.Equals(FiltroLeitura.Concluido))
-                listaTarefasFiltrada = Tarefas.OrderByDescending(x => x.DataCriacao).Where(t => t.Status == true).ToList();
-            else
-                listaTarefasFiltrada = Tarefas.OrderByDescending(x => x.DataCriacao).Where(t => t.Status == false).ToList();
-
-            // Melhorar isso ^^^^^
+            listaTarefasFiltrada = Tarefas.Where(t => t.Status.Equals(statusTarefa)).ToList();
 
             if (listaTarefasFiltrada.Count == 0)
                 return "Não existem tarefas para serem mostradas.";
@@ -62,10 +39,10 @@ namespace Teste_DataInfo
             {
                 Tarefa tarefa = listaTarefasFiltrada[i];
 
-                string status = tarefa.Status ? "Concluída" : "Pendente";
+                string status = tarefa.Status.Equals(Tarefa.StatusTarefa.Concluido) ? "Concluída" : "Pendente";
+                string data = tarefa.DataCriacao.ToString("dd/MM/yyyy HH:mm");
 
-                textoApresentacao += $" {i + 1} - Titulo: {tarefa.Titulo}\n Descricao: {tarefa.Descricao}\n Status: {status}\n Data de criação: {tarefa.DataCriacao.ToString("dd/MM/yyyy HH:mm")}\n";
-                textoApresentacao += "________________________________________\n";
+                textoApresentacao += $" {i + 1}. [{status}] - {tarefa.Titulo} (Criado em: {data} Descrição: {tarefa.Descricao})\n";
             }
 
             return textoApresentacao;
@@ -111,11 +88,11 @@ namespace Teste_DataInfo
 
             if (indexTarefa < Tarefas.Count)
             {
-                bool statusAtual = Tarefas[indexTarefa].Status;
+                Tarefa.StatusTarefa statusAtual = Tarefas[indexTarefa].Status;
 
-                Tarefas[indexTarefa].Status = !statusAtual;
+                Tarefas[indexTarefa].Status = ~statusAtual;
 
-                if (Tarefas[indexTarefa].Status)
+                if (Tarefas[indexTarefa].Status.Equals(Tarefa.StatusTarefa.Concluido))
                     return "Tarefa alterada para concluida.";
                 else
                     return "Tarefa alterada para pendente.";

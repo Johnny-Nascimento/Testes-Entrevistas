@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Teste_DataInfo.ManipuladorTarefas;
+﻿using static Teste_DataInfo.ManipuladorTarefas;
 
 namespace Teste_DataInfo
 {
@@ -51,10 +46,10 @@ namespace Teste_DataInfo
 
                         Tarefa tarefa = new Tarefa();
 
-                        Console.WriteLine("Escreva o titulo da tarefa. *");
+                        Console.WriteLine("Digite o título da tarefa:*");
                         tarefa.Titulo = Console.ReadLine();
 
-                        Console.WriteLine("Escreva a descrição da tarefa.");
+                        Console.WriteLine("Digite a descrição da tarefa:");
                         tarefa.Descricao = Console.ReadLine();
 
                         Console.WriteLine(manipuladorTarefas.AdicionaTarefa(tarefa));
@@ -75,15 +70,15 @@ namespace Teste_DataInfo
 
                         Console.WriteLine(manipuladorTarefas.ListaTarefas());
 
-                        Console.WriteLine("Que tarefa deseja editar?");
+                        Console.WriteLine("Selecione o ID da tarefa que deseja editar:");
                         int indexTarefa = Convert.ToInt32(Console.ReadLine());
 
                         Tarefa tarefa = new Tarefa();
 
-                        Console.WriteLine("Escreva o titulo da tarefa. *");
+                        Console.WriteLine("Novo título:*");
                         tarefa.Titulo = Console.ReadLine();
 
-                        Console.WriteLine("Escreva a descrição da tarefa.");
+                        Console.WriteLine("Nova descrição:");
                         tarefa.Descricao = Console.ReadLine();
 
                         Console.WriteLine(manipuladorTarefas.EditaTarefa(indexTarefa, tarefa));
@@ -96,7 +91,7 @@ namespace Teste_DataInfo
 
                         Console.WriteLine(manipuladorTarefas.ListaTarefas());
 
-                        Console.WriteLine("Que tarefa deseja excluir?");
+                        Console.WriteLine("Selecione o ID da tarefa que deseja excluir:");
                         int indexTarefa = Convert.ToInt32(Console.ReadLine());
 
                         Console.WriteLine(manipuladorTarefas.ExcluiTarefa(indexTarefa));
@@ -109,7 +104,7 @@ namespace Teste_DataInfo
 
                         Console.WriteLine(manipuladorTarefas.ListaTarefas());
 
-                        Console.WriteLine("Que tarefa deseja alterar o status?");
+                        Console.WriteLine("Selecione o ID da tarefa que deseja marcar/desmarcar:");
                         int indexTarefa = Convert.ToInt32(Console.ReadLine());
 
                         Console.WriteLine(manipuladorTarefas.AlteraStatusTarefa(indexTarefa));
@@ -124,9 +119,9 @@ namespace Teste_DataInfo
                         Console.WriteLine("2 - Ver tarefas concluidas");
                         Console.WriteLine("3 - Ver tarefas pendentes");
 
-                        FiltroLeitura filtroTarefa = (FiltroLeitura)Convert.ToInt32(Console.ReadLine());
+                        Tarefa.StatusTarefa statusTarefa = (Tarefa.StatusTarefa)Convert.ToInt32(Console.ReadLine());
 
-                        Console.WriteLine(manipuladorTarefas.ListaTarefas(filtroTarefa));
+                        Console.WriteLine(manipuladorTarefas.ListaTarefas(statusTarefa));
                     }
                     break;
 
@@ -141,8 +136,6 @@ namespace Teste_DataInfo
 
                 opcao = (Opcoes)MostraMenu();
             }
-
-            Console.WriteLine("Fim");
         }
     }
 }

@@ -1,7 +1,5 @@
-﻿using System;
-using static Teste_DataInfo.Menu;
-
-// Inicio 15:00
+﻿// Inicio 15:00
+// Pausa 16:59
 
 // Se nos readlines for digitado letras, vai dar erro. tratar
 

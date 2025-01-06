@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Teste_DataInfo
+﻿namespace Teste_DataInfo
 {
     public class Tarefa
     {
+        [Flags]
+        public enum StatusTarefa : byte
+        {
+            Concluido = 1,
+            Pendente = 2
+        };
+
         public string Titulo { get; set; }
         public string Descricao { get; set; }
-        public bool Status { get; set; } // ENUMERATOR ??
+        public StatusTarefa Status { get; set; }
         public DateTime DataCriacao { get; set; }
     }
 }
