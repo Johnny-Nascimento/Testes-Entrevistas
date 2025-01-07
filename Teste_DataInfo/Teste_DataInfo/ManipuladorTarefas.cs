@@ -1,4 +1,6 @@
-﻿namespace Teste_DataInfo
+﻿using static Teste_DataInfo.Tarefa;
+
+namespace Teste_DataInfo
 {
     public class ManipuladorTarefas
     {        
@@ -8,27 +10,30 @@
             Tarefas = new List<Tarefa>();
         }
 
-        // Adicionar Tarefa: O usuário deve poder adicionar uma nova tarefa com título e descrição
-        // opcional.
         public string AdicionaTarefa(Tarefa tarefa)
         {
             if (tarefa.Titulo == string.Empty)
                 return "O campo titulo não foi informado.";
 
             tarefa.DataCriacao = DateTime.Now;
+            tarefa.Status = StatusTarefa.Pendente;
+
             Tarefas.Add(tarefa);
 
             return "Tarefa adicionada com Sucesso";
         }
 
-        // Listar todas as tarefas cadastradas, mostrando título, descrição, status(pendente
-        // ou concluída), e a data de criação.
-        // Filtrar Tarefas: Permitir ao usuário visualizar apenas tarefas pendentes, concluídas ou todas. 
-        public string ListaTarefas(Tarefa.StatusTarefa statusTarefa = Tarefa.StatusTarefa.Pendente | Tarefa.StatusTarefa.Concluido)
+        // Ex saída
+        // 1. [Pendente] - Estudar C# (Criado em: 10/11/2023) Descrição: Revisar conceitos avançados  
+        // 2. [Concluído] - Preparar reunião(Criado em: 09/11/2023) Descrição: Criar slides para a apresentação
+        public string ListaTarefas(StatusTarefa statusTarefa = StatusTarefa.Todos)
         {
             List<Tarefa> listaTarefasFiltrada = new List<Tarefa>();
 
-            listaTarefasFiltrada = Tarefas.Where(t => t.Status.Equals(statusTarefa)).ToList();
+            if (statusTarefa == StatusTarefa.Todos)
+                listaTarefasFiltrada = Tarefas;
+            else
+                listaTarefasFiltrada = Tarefas.Where(t => t.Status.Equals(statusTarefa)).ToList();
 
             if (listaTarefasFiltrada.Count == 0)
                 return "Não existem tarefas para serem mostradas.";
@@ -39,16 +44,15 @@
             {
                 Tarefa tarefa = listaTarefasFiltrada[i];
 
-                string status = tarefa.Status.Equals(Tarefa.StatusTarefa.Concluido) ? "Concluída" : "Pendente";
-                string data = tarefa.DataCriacao.ToString("dd/MM/yyyy HH:mm");
+                string status = tarefa.Status.Equals(StatusTarefa.Concluido) ? "Concluída" : "Pendente";
+                string data = tarefa.DataCriacao.ToString("dd/MM/yyyy");
 
-                textoApresentacao += $" {i + 1}. [{status}] - {tarefa.Titulo} (Criado em: {data} Descrição: {tarefa.Descricao})\n";
+                textoApresentacao += $" {i + 1}. [{status}] - {tarefa.Titulo} (Criado em: {data}) Descrição: {tarefa.Descricao}\n";
             }
 
             return textoApresentacao;
         }
 
-        // Editar Tarefa: Permitir que o usuário edite o título e a descrição de uma tarefa. 
         public string EditaTarefa(int indexTarefa, Tarefa tarefa)
         {
             if (tarefa.Titulo == string.Empty)
@@ -67,7 +71,6 @@
                 return "Tarefa inexistente.";
         }
 
-        // Excluir Tarefa: Remover uma tarefa da lista. 
         public string ExcluiTarefa(int indexTarefa)
         {
             --indexTarefa;
@@ -81,7 +84,6 @@
                 return "Tarefa inexistente.";
         }
 
-        // Marcar/Desmarcar como Concluída: Alternar o status da tarefa entre concluída e pendente
         public string AlteraStatusTarefa(int indexTarefa)
         {
             --indexTarefa;
@@ -90,9 +92,9 @@
             {
                 Tarefa.StatusTarefa statusAtual = Tarefas[indexTarefa].Status;
 
-                Tarefas[indexTarefa].Status = ~statusAtual;
+                Tarefas[indexTarefa].Status = statusAtual.Equals(StatusTarefa.Concluido) ? StatusTarefa.Pendente : StatusTarefa.Concluido;
 
-                if (Tarefas[indexTarefa].Status.Equals(Tarefa.StatusTarefa.Concluido))
+                if (Tarefas[indexTarefa].Status.Equals(StatusTarefa.Concluido))
                     return "Tarefa alterada para concluida.";
                 else
                     return "Tarefa alterada para pendente.";

@@ -2,11 +2,11 @@
 {
     public class Tarefa
     {
-        [Flags]
-        public enum StatusTarefa : byte
+        public enum StatusTarefa
         {
-            Concluido = 1,
-            Pendente = 2
+            Todos  = 1,
+            Concluido = 2,
+            Pendente = 3
         };
 
         public string Titulo { get; set; }

@@ -1,7 +1,7 @@
 ﻿// Inicio 15:00
-// Pausa 16:59
+// Fim 16:59
 
-// Se nos readlines for digitado letras, vai dar erro. tratar
+// Inicio 08:00
 
 namespace Teste_DataInfo
 {
