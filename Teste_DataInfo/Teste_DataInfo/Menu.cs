@@ -1,5 +1,4 @@
-﻿using static Teste_DataInfo.ManipuladorTarefas;
-
+﻿
 namespace Teste_DataInfo
 {
     public class Menu
