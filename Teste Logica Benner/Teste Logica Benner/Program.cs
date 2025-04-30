@@ -1,6 +1,7 @@
 ﻿
 namespace Teste_Logica
 {
+    // The class should also provide four public methods, Connect, Disconnect, Query and LevelConnection.
     public class Arvore
     {
         private Dictionary<int, List<int>> folhas = new Dictionary<int, List<int>>();
@@ -9,15 +10,14 @@ namespace Teste_Logica
         // an invalid value should throw an exception.
         public Arvore(int quantidadeFolhas)
         {
-            ValidaDiferenteDeZero(quantidadeFolhas, 1);
+            if (quantidadeFolhas <= 0)
+                throw new Exception("Esperado número maior que 0.");
 
             for (int i = 1; i <= quantidadeFolhas; i++)
             {
                 folhas.Add(i, new List<int>());
             }
         }
-
-        // The class should also provide four public methods, Connect, Disconnect, Query and LevelConnection.
 
         // The connect method will take two integers indicating the elements to connect.This method should throw exceptions as appropriate.
         public void Connect(int folhaA, int folhaB)
@@ -96,21 +96,45 @@ namespace Teste_Logica
 
             List<int> conexoesB = new List<int>();
             folhas.TryGetValue(folhaB, out conexoesB);
-
+            
             int conexao = conexoesA.FindIndex(c => c == folhaB);
             if (conexao != -1)
                 return 1;
 
-            // Conexões indiretas
-            // 
-            //
+            var folhasAux = folhas;
+            int numeroConexoes = 1;
+            List<int> conexoesAux = new List<int> { folhaA };
+            while (true)
+            {
+                numeroConexoes++;
+
+                folhasAux = folhasAux.Where(
+                    l => l.Value.FindIndex(c => conexoesAux.FindIndex(cc => cc == c) != - 1) != -1
+                    ).ToDictionary();
+
+                if (folhasAux.Count == 0)
+                    return 0;
+
+                conexoesAux.Clear();
+
+                foreach (var folha in folhasAux)
+                {
+                    conexoesAux.Add(folha.Key);
+
+                    int index = folha.Value.FindIndex(c => c == folhaB);
+                    if (index != -1)
+                        return numeroConexoes;
+                }
+            }
 
             return 0;
         }
 
-        // Aux
         private void ValidaParametros(int folhaA, int folhaB)
         {
+            if (folhaA == folhaB)
+                throw new Exception("Esperado números diferentes.");
+
             ValidaDiferenteDeZero(folhaA, folhaB);
             ValidaExiste(folhaA, folhaB);
         }
@@ -144,6 +168,7 @@ namespace Teste_Logica
             Console.WriteLine($"5 e 6 {arvore.Query(5, 6)}");
 
             Console.WriteLine("Level connection");
+            Console.WriteLine($"1 e 4 {arvore.LevelConnection(1, 4)}");
             Console.WriteLine($"1 e 2 {arvore.LevelConnection(1, 2)}");
             Console.WriteLine($"1 e 6 {arvore.LevelConnection(1, 6)}");
             Console.WriteLine($"6 e 2 {arvore.LevelConnection(6, 2)}");
