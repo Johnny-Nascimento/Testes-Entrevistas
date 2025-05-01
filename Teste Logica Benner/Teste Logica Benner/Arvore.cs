@@ -3,7 +3,7 @@
     // The class should also provide four public methods, Connect, Disconnect, Query and LevelConnection.
     public class Arvore
     {
-        private Dictionary<int, List<int>> folhas = new Dictionary<int, List<int>>();
+        private readonly Dictionary<int, List<int>> folhas = new Dictionary<int, List<int>>();
 
         // The constructor should take a positive integer value indicating the number of elements in the set. Passing 
         // an invalid value should throw an exception.
@@ -64,28 +64,42 @@
         // false if the elements are not connected.
         public bool Query(int folhaA, int folhaB)
         {
-            ValidaParametros(folhaA, folhaB);
+            if (LevelConnection(folhaA, folhaB) > 0)
+                return true;
 
-            List<int> conexoesA = new List<int>();
-            folhas.TryGetValue(folhaA, out conexoesA);
-
-            List<int> conexoesB = new List<int>();
-            folhas.TryGetValue(folhaB, out conexoesB);
-
-            if (conexoesA.Count == 0 || conexoesB.Count == 0)
-                return false;
-
-            int conexao = conexoesA.FindIndex(c => c == folhaB);
-            if (conexao == -1)
-                return false;
-
-            return true;
+            return false;
         }
 
         // The levelConnetion method will also take two integers and should also throw an exception as appropriate, returning an integer value.
         // It should return 0 if the elements are not connected, 1 if the elements are
         // directly connected and 2 or more when elements are indirectly connect, returning the number that
         // represents how many connections there are between the searched elements. 
+        #pragma region Documentacao
+        /* Conexões pra explicação
+            1 - 2 -3 - 4 - 5 - 6 - 7 - 8 - 9 - 10
+            |__________________|
+
+            Arvore.LevelConnection(1, 5);
+            Num primeiro momento é acessado a folhaA e procurado se existe uma conexão com a folhaB para retornar 1 como conexão direta.
+
+            Em caso de não encontrar o próximo passo é criar uma conexão com folhaA, e procurar todas as folhas que conectam-se com folhaA
+            Não encontrando retorna-se 0
+
+            Encontrado, percorre-se o dicionario de folhas, e procura na lista de conexões a folhaB, encontrando é retornado o número de conexões atual.
+            Não encontrado, adiciona todas as novas folhas a lista de conexoes filtro e repete-se a busca
+
+            Variaveis
+
+        folhaA = indica a folha inicial da busca
+        folhaB = indica a folha objetivo da busca
+        conexoesA = indica a lista de conexões da folhaA
+        numeroConexoes = recebe iterações para cada rodada de busca por conexões, inicia com 1 pois a primeira procura ja foi feita na conexoesA
+        conexoesAux = recebe a lista de conexões para serem filtradas
+
+            a condição while (numeroConexoes < folhaB) substitui o while(true), prevenindo que as interações ultrapassem o último valor objetivo,
+        pois imagina-se que o maior caminho de 1 para 100 seja 99
+        */
+        #pragma endregion Documentacao
         public int LevelConnection(int folhaA, int folhaB)
         {
             ValidaParametros(folhaA, folhaB);
@@ -93,23 +107,24 @@
             List<int> conexoesA = new List<int>();
             folhas.TryGetValue(folhaA, out conexoesA);
 
-            List<int> conexoesB = new List<int>();
-            folhas.TryGetValue(folhaB, out conexoesB);
-
             int conexao = conexoesA.FindIndex(c => c == folhaB);
             if (conexao != -1)
                 return 1;
 
-            var folhasAux = folhas;
             int numeroConexoes = 1;
             List<int> conexoesAux = new List<int> { folhaA };
-            while (true)
+            while (numeroConexoes < folhaB)
             {
                 numeroConexoes++;
 
-                folhasAux = folhasAux.Where(
-                    l => l.Value.FindIndex(c => conexoesAux.FindIndex(cc => cc == c) != -1) != -1
-                    ).ToDictionary();
+                var folhasAux = folhas.Where(
+                    l => l.Value.FindIndex(
+                            c => conexoesAux.FindIndex(
+                                cc => cc == c
+                            ) != -1
+                         ) != -1
+                    )
+                    .ToDictionary();
 
                 if (folhasAux.Count == 0)
                     return 0;

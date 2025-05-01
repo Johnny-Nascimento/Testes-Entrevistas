@@ -23,6 +23,8 @@ namespace Logica_Benner_Test
             // Assert
 
             Assert.IsTrue(arvore.Query(1, 2));
+            Assert.IsTrue(arvore.Query(1, 4));
+            Assert.IsTrue(arvore.Query(6, 4));
             Assert.IsTrue(arvore.Query(1, 6));
             Assert.IsTrue(arvore.Query(6, 2));
             Assert.IsTrue(arvore.Query(2, 4));
@@ -64,7 +66,7 @@ namespace Logica_Benner_Test
         }
 
         [TestMethod]
-        public void Deve_Retornar_Apenas_Niveis_De_Conexao_0()
+        public void Deve_Retornar_Apenas_LevelConnection_0()
         {
             // Arrange
 
@@ -83,7 +85,7 @@ namespace Logica_Benner_Test
         }
 
         [TestMethod]
-        public void Deve_Retornar_Apenas_Niveis_De_Conexao_1()
+        public void Deve_Retornar_Apenas_LevelConnection_1()
         {
             // Arrange
 
@@ -103,7 +105,7 @@ namespace Logica_Benner_Test
         }
 
         [TestMethod]
-        public void Deve_Retornar_Apenas_Niveis_De_Conexao_2()
+        public void Deve_Retornar_Apenas_LevelConnection_2()
         {
             // Arrange
 
@@ -153,25 +155,47 @@ namespace Logica_Benner_Test
         }
 
         [TestMethod]
-        public void Deve_Testar_O_Tempo_Para_Achar_O_Ultimo_LevelConnection()
+        public void Deve_Retornar_LevellConnection_Variavel_Quantidade()
         {
             // Arrange
-
-            Arvore arvore = new Arvore(8);
-
-            arvore.Connect(1, 6);
-            arvore.Connect(5, 8);
+            int quantidade = 1000;
+            Arvore arvore = new Arvore(quantidade);
 
             // Act
 
-            arvore.Disconnect(1, 6);
-            arvore.Disconnect(5, 8);
-
+            for (int i = 2; i <= quantidade; i++)
+            {
+                arvore.Connect(i - 1, i);
+            }
 
             // Assert
+            Assert.AreEqual(quantidade - 1, arvore.LevelConnection(1, quantidade));
+        }
 
-            Assert.IsFalse(arvore.Query(1, 6));
-            Assert.IsFalse(arvore.Query(5, 8));
+        [TestMethod]
+        public void Deve_Retornar_LevellConnection_Com_Menor_Caminho()
+        {
+            // Arrange
+            Arvore arvore = new Arvore(10);
+
+            // Act 
+
+            // 1 - 2 -3 - 4 - 5 - 6 - 7 - 8 - 9 - 10
+            // |__________________|
+            // Menor caminho 2 (6, 5)
+
+            arvore.Connect(1, 2);
+            arvore.Connect(2, 3);
+            arvore.Connect(3, 4);
+            arvore.Connect(4, 5);
+            arvore.Connect(5, 6);
+            arvore.Connect(6, 7);
+            arvore.Connect(7, 8);
+
+            arvore.Connect(1, 6);
+
+            // Assert
+            Assert.AreEqual(2, arvore.LevelConnection(1, 5));
         }
     }
 }
