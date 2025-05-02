@@ -111,6 +111,8 @@
             int numeroMaxConexoes = Math.Max(folhaA, folhaB);
             List<int> conexoesAux = new List<int> { folhaA };
 
+            HashSet<int> chavesProcessadas = new HashSet<int>();
+
             while (numeroConexoes < numeroMaxConexoes)
             {
                 numeroConexoes++;
@@ -131,7 +133,8 @@
 
                 foreach (var folha in folhasAux)
                 {
-                    conexoesAux.Add(folha.Key);
+                    if (chavesProcessadas.Add(folha.Key))
+                        conexoesAux.Add(folha.Key);
 
                     int index = folha.Value.FindIndex(c => c == folhaB);
                     if (index != -1)
