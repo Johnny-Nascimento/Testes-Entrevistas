@@ -74,32 +74,28 @@
         // It should return 0 if the elements are not connected, 1 if the elements are
         // directly connected and 2 or more when elements are indirectly connect, returning the number that
         // represents how many connections there are between the searched elements. 
-        #pragma region Documentacao
-        /* Conexões pra explicação
-            1 - 2 -3 - 4 - 5 - 6 - 7 - 8 - 9 - 10
-            |__________________|
+#pragma region Documentacao
+        /* 
+        Arvore.LevelConnection(1, 5);
+        Num primeiro momento é acessado a folhaA e procurado se existe uma conexão com a folhaB para retornar 1 como conexão direta.
 
-            Arvore.LevelConnection(1, 5);
-            Num primeiro momento é acessado a folhaA e procurado se existe uma conexão com a folhaB para retornar 1 como conexão direta.
+        Em caso de não encontrar o próximo passo é criar uma conexão com folhaA, e procurar todas as folhas que conectam-se com folhaA
+        Não encontrando retorna-se 0
 
-            Em caso de não encontrar o próximo passo é criar uma conexão com folhaA, e procurar todas as folhas que conectam-se com folhaA
-            Não encontrando retorna-se 0
+        Encontrado, percorre-se o dicionario de folhas, e procura na lista de conexões a folhaB, encontrando é retornado o número de conexões atual.
+        Não encontrado, adiciona todas as novas folhas a lista de conexoes filtro e repete-se a busca
 
-            Encontrado, percorre-se o dicionario de folhas, e procura na lista de conexões a folhaB, encontrando é retornado o número de conexões atual.
-            Não encontrado, adiciona todas as novas folhas a lista de conexoes filtro e repete-se a busca
-
-            Variaveis
-
+        Variaveis
         folhaA = indica a folha inicial da busca
         folhaB = indica a folha objetivo da busca
         conexoesA = indica a lista de conexões da folhaA
         numeroConexoes = recebe iterações para cada rodada de busca por conexões, inicia com 1 pois a primeira procura ja foi feita na conexoesA
         conexoesAux = recebe a lista de conexões para serem filtradas
 
-            a condição while (numeroConexoes < folhaB) substitui o while(true), prevenindo que as interações ultrapassem o último valor objetivo,
+        a condição while (numeroConexoes < Math.Max(folhaA, folhaB)) substitui o while(true), prevenindo que as interações ultrapassem o último valor objetivo,
         pois imagina-se que o maior caminho de 1 para 100 seja 99
         */
-        #pragma endregion Documentacao
+#pragma endregion Documentacao
         public int LevelConnection(int folhaA, int folhaB)
         {
             ValidaParametros(folhaA, folhaB);
@@ -112,8 +108,10 @@
                 return 1;
 
             int numeroConexoes = 1;
+            int numeroMaxConexoes = Math.Max(folhaA, folhaB);
             List<int> conexoesAux = new List<int> { folhaA };
-            while (numeroConexoes < folhaB)
+
+            while (numeroConexoes < numeroMaxConexoes)
             {
                 numeroConexoes++;
 

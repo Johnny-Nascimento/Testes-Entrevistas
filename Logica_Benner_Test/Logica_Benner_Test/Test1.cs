@@ -155,24 +155,6 @@ namespace Logica_Benner_Test
         }
 
         [TestMethod]
-        public void Deve_Retornar_LevellConnection_Variavel_Quantidade()
-        {
-            // Arrange
-            int quantidade = 1000;
-            Arvore arvore = new Arvore(quantidade);
-
-            // Act
-
-            for (int i = 2; i <= quantidade; i++)
-            {
-                arvore.Connect(i - 1, i);
-            }
-
-            // Assert
-            Assert.AreEqual(quantidade - 1, arvore.LevelConnection(1, quantidade));
-        }
-
-        [TestMethod]
         public void Deve_Retornar_LevellConnection_Com_Menor_Caminho()
         {
             // Arrange
@@ -196,6 +178,24 @@ namespace Logica_Benner_Test
 
             // Assert
             Assert.AreEqual(2, arvore.LevelConnection(1, 5));
+        }
+
+        [TestMethod]
+        public void Deve_Retornar_LevellConnection_Variavel_Quantidade()
+        {
+            // Arrange
+            int quantidade = 2000;
+            Arvore arvore = new Arvore(quantidade);
+
+            // Act
+
+            for (int i = 2; i <= quantidade; i++)
+            {
+                arvore.Connect(i - 1, i);
+            }
+
+            // Assert
+            Assert.AreEqual(quantidade - 1, arvore.LevelConnection(1, quantidade));
         }
     }
 }
