@@ -5,7 +5,7 @@ VisualStudioVersion = 17.13.35931.197 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logica_Benner_Test", "Logica_Benner_Test\Logica_Benner_Test.csproj", "{5097C2A3-1DF7-4E76-9824-28FBD83C3EC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teste Logica Benner", "..\Teste Logica Benner\Teste Logica Benner\Teste Logica Benner.csproj", "{E91E2906-171D-97DA-85D8-475F2573D110}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Teste Logica Benner", "..\..\Teste Logica Benner\Teste Logica Benner\Teste Logica Benner.csproj", "{E91E2906-171D-97DA-85D8-475F2573D110}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
