@@ -184,7 +184,7 @@ namespace Logica_Benner_Test
         public void Deve_Retornar_LevellConnection_Variavel_Quantidade()
         {
             // Arrange
-            int quantidade = 2000;
+            int quantidade = 1000000;
             Arvore arvore = new Arvore(quantidade);
 
             // Act
